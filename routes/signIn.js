@@ -15,7 +15,7 @@ router.post("/", async (req, res) => {
 			return res.status(400).send("Неверный email или пароль.");
 
 		const token = user.generateAuthToken();
-		res.header("Authorization", token).send({ token });
+		res.status(201).send({ token });
 	} catch (error) {
 		console.error(error);
 		return res.status(500).send("Ошибка сервера.", error);

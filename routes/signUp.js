@@ -8,7 +8,7 @@ router.post("/", async (req, res) => {
 	const { error } = validateSignUp(req.body);
 	if (error) return res.status(400).send(error.details[0].message);
 
-	let signUp = await SignUp.findOne({email});
+	let signUp = await SignUp.findOne({ email });
 	if (signUp)
 		return res
 			.status(400)
