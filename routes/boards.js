@@ -4,19 +4,24 @@ const Board = require("../models/board");
 const auth = require("../middleware/auth");
 
 router.post("/", auth, async (req, res) => {
-	const { title } = req.body;
-	if (!title || title.length <= 0) {
+	const { title, colorContainer } = req.body;
+	if (!title) {
 		return res
 			.status(400)
 			.send({ message: 'Название доски должно быть минимум 1 символа."' });
 	}
+	console.log("req.body:", req.body); // Посмотрим, что приходит
+	console.log("req.user:", req.user);
 
 	try {
-		const board = new Board({ title, userId: req.user._id });
+		const board = new Board({ title, userId: req.user._id, colorContainer });
 		await board.save();
-		res.status(210).send({ message: "", board });
+		res.status(201).send({ message: "Успешно", board });
 	} catch (error) {
-		res.status(500).send({ message: "Ошибка при создании доски." });
+		console.error(error);
+		res
+			.status(500)
+			.send({ message: "Ошибка при создании доски.", error: error.message });
 	}
 });
 

@@ -14,6 +14,10 @@ const boardSchema = new mongoose.Schema({
 		type: Date,
 		default: Date.now(),
 	},
+	colorContainer: {
+		type: String,
+		required: true,
+	}
 });
 
 const Board = mongoose.model("Board", boardSchema);

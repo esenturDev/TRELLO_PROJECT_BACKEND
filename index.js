@@ -19,7 +19,13 @@ const corsOptions = {
 	},
 };
 
-app.use(cors(corsOptions)); // Убираем дублирование мидлваров CORS
+// const corsOptions = {
+// 	origin: ['http://localhost:3000'],  // Замените на порт или домен, откуда приходят запросы
+// 	methods: ['GET', 'POST', 'PUT', 'DELETE'],  // Разрешаем необходимые методы
+// 	allowedHeaders: ['Content-Type', 'Authorization'],  // Разрешаем нужные заголовки
+// };
+
+// Убираем дублирование мидлваров CORS
 
 if (!config.get("jwtPrivateKey")) {
 	console.error("FATAL ERROR: jwtPrivateKey не задан в конфигурации.");
@@ -32,7 +38,10 @@ mongoose
 	.then(() => console.log("MongoDB подключён успешно!"))
 	.catch((err) => console.log("Ошибка подключения к MongoDB:", err));
 
-app.use(express.json());
+app.use(express.json()); // Обработчик JSON для req.body
+app.use(
+	cors(corsOptions)
+);
 app.use("/auth/signUp", signUpRoute);
 app.use("/auth/signIn", signInRoute);
 app.use("/boards", boardRoutes);
