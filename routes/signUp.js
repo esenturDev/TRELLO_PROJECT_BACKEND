@@ -18,7 +18,7 @@ router.post("/", async (req, res) => {
 		const salt = await bcrypt.genSalt();
 		signUp.password = await bcrypt.hash(signUp.password, salt);
 		await signUp.save();
-		return res.status(201).send(_.pick(signUp, ["email", "email", "_id"]));
+		return res.status(201).send(_.pick(signUp, ["name", "email", "_id"]));
 	} catch (error) {
 		console.error(error);
 		return res.status(500).send(`что то не так! ${error.message}`);

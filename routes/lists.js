@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const List = require("../models/list");
-
-router.post("/", async (req, res) => {
+const auth = require("../middleware/auth");
+router.post("/", auth, async (req, res) => {
 	const { title, boardId } = req.body;
 
 	if (!title || title.length <= 0)
@@ -13,7 +13,7 @@ router.post("/", async (req, res) => {
 	if (!boardId) return res.status(400).send({ message: "Не указан boardId." });
 
 	try {
-		const list = new List({ title, boardId });
+		const list = new List({ title, boardId, userId: req.user._id });
 		await list.save();
 		res.status(201).send({ message: "Успешно", list });
 	} catch (error) {
@@ -21,9 +21,9 @@ router.post("/", async (req, res) => {
 	}
 });
 
-router.get("/", async (req, res) => {
+router.get("/", auth, async (req, res) => {
 	try {
-		const lists = await List.find();
+		const lists = await List.find({ userId: req.user._id });
 		res.status(200).send(lists);
 	} catch (error) {
 		res.status(500).send({ message: "Ошибка при получении list." });

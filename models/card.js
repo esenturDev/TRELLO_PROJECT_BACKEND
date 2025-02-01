@@ -13,8 +13,18 @@ const cardSchema = new mongoose.Schema({
 	},
 	createdAt: {
 		type: Date,
-		default: Date.now(),
+		default: Date.now,
 	},
+	userId: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'SignUp',
+		required: true,
+	},
+	boardId: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'Board',
+		required: true,
+	}
 });
 
 const Card = mongoose.model("Card", cardSchema);

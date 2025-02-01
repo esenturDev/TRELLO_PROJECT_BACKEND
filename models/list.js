@@ -12,8 +12,13 @@ const listSchema = new mongoose.Schema({
 	},
 	createdAt: {
 		type: Date,
-		default: Date.now(),
+		default: Date.now,
 	},
+	userId: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'SignUp',
+		required: true,
+	}
 });
 
 const List = mongoose.model('List', listSchema);
