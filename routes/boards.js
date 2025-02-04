@@ -34,4 +34,19 @@ router.get("/", auth, async (req, res) => {
 	}
 });
 
+router.get("/:id", auth, async (req, res) => {
+	const { id } = req.params;
+	if (!id)
+		return res.status(404).send({ message: "Мындай id деги доска жок!" });
+	try {
+		const board = await Board.findById(id);
+		if (!board)
+			return res.status(404).send({ message: "Такой доски не существует!" });
+		res.status(200).send(board);
+	} catch (error) {
+		console.error("Ошибка при получении доски:", error);
+		res.status(500).send({ message: "что-то не так!", error: error.message });
+	}
+});
+
 module.exports = router;
