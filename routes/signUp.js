@@ -3,6 +3,7 @@ const router = express.Router();
 const { SignUp, validateSignUp } = require("../models/signUp");
 const bcrypt = require("bcrypt");
 const _ = require("lodash");
+const auth = require("../middleware/auth");
 router.post("/", async (req, res) => {
 	const { email, password, name } = req.body;
 	const { error } = validateSignUp(req.body);
@@ -24,4 +25,10 @@ router.post("/", async (req, res) => {
 		return res.status(500).send(`что то не так! ${error.message}`);
 	}
 });
+
+router.get("/me", auth, async (req, res) => {
+	const user = await SignUp.find(req.user._id).select("-password");
+	res.status(200).send(user);
+});
+
 module.exports = router;
