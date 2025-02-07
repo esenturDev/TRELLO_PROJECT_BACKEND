@@ -22,8 +22,10 @@ router.post("/", auth, async (req, res) => {
 });
 
 router.get("/", auth, async (req, res) => {
+	const { boardId } = req.query;
+	if (!boardId) return res.status(403).send({ message: "Board not found" });
 	try {
-		const lists = await List.find({ userId: req.user._id });
+		const lists = await List.find({ userId: req.user._id, boardId: boardId });
 		res.status(200).send(lists);
 	} catch (error) {
 		res.status(500).send({ message: "Ошибка при получении list." });
